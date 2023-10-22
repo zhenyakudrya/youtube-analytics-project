@@ -1,10 +1,11 @@
 from googleapiclient.discovery import build
 import os
+from src.channel import APIMixin
 
 
-class Video:
+class Video(APIMixin):
 
-    youtube = build('youtube', 'v3', developerKey=os.getenv('YT_API_KEY'))
+    youtube = APIMixin.get_service()
 
     def __init__(self, video_id: str) -> None:
         self.video_id = video_id

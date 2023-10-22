@@ -2,10 +2,12 @@ from googleapiclient.discovery import build
 import os
 import isodate
 from datetime import timedelta
+from src.channel import APIMixin
 
 
-class PlayList:
-    youtube = build('youtube', 'v3', developerKey=os.getenv('YT_API_KEY'))
+class PlayList(APIMixin):
+
+    youtube = APIMixin.get_service()
 
     def __init__(self, playlist_id):
         playlist_info = self.youtube.playlists().list(id=playlist_id, part='snippet', ).execute()
@@ -58,3 +60,10 @@ class PlayList:
             if int(video['statistics']['likeCount']) > max_like_count:
                 url = f'https://youtu.be/{video["id"]}'
         return url
+
+
+
+
+
+
+
