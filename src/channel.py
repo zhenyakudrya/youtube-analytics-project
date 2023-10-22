@@ -1,13 +1,24 @@
 import json
 import os
 from googleapiclient.discovery import build
-import isodate
 
 
-class Channel:
+class APIMixin:
+    """Класс-миксин для предоставления доступа к API."""
+
+    __API_KEY: str = os.getenv('YT_API_KEY')
+
+    @classmethod
+    def get_service(cls) -> build:
+        """Возвращает объект для работы с API youtube."""
+        service = build('youtube', 'v3', developerKey=cls.__API_KEY)
+        return service
+
+
+class Channel(APIMixin):
     """Класс для ютуб-канала"""
 
-    youtube = build('youtube', 'v3', developerKey=os.getenv('YT_API_KEY'))
+    youtube = APIMixin.get_service()
 
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала.
